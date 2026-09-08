@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { OwnerService } from '../owner.service';
 import { Owner } from '../owner';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +29,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-owner-edit',
   templateUrl: './owner-edit.component.html',
   styleUrls: ['./owner-edit.component.css'],
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class OwnerEditComponent implements OnInit {
   owner: Owner;
@@ -38,7 +39,7 @@ export class OwnerEditComponent implements OnInit {
   constructor(
     private ownerService: OwnerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.owner = {} as Owner;
   }
@@ -47,16 +48,16 @@ export class OwnerEditComponent implements OnInit {
     const ownerId = this.route.snapshot.params.id;
     this.ownerService.getOwnerById(ownerId).subscribe(
       (owner) => (this.owner = owner),
-      (error) => (this.errorMessage = error as any)
+      (error) => (this.errorMessage = error as any),
     );
   }
 
   onSubmit(owner: Owner) {
-    const that = this;  
+    const that = this;
     const ownerId = this.route.snapshot.params.id;
-    this.ownerService.updateOwner(ownerId , owner).subscribe(
+    this.ownerService.updateOwner(ownerId, owner).subscribe(
       (res) => this.gotoOwnerDetail(owner),
-      (error) => (this.errorMessage = error as any)
+      (error) => (this.errorMessage = error as any),
     );
   }
 
