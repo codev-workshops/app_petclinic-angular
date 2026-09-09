@@ -25,8 +25,8 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 | 0 - Pre-work | 16 (unchanged) | `feature/praveen-demo-migration-phase0-prework` | #28 | Done | 16.2.1 |
 | 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | #29 | Done | 17.3.12 |
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
-| 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | In progress | 19.2.25 |
-| 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | - | Not started | - |
+| 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | Done | 19.2.25 |
+| 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | TBD | In progress | 20.3.30 |
 
 ## Phase checklist
 
@@ -94,17 +94,24 @@ DoD:
 ### Phase 4 - Angular 20 (target: 20.x)
 
 Scope:
-- [ ] Node 20.19+/22+, TypeScript ~5.8; `ng update` to 20.
-- [ ] Migrate unit tests off the deprecated Karma builder to web-test-runner or Vitest; update/remove `karma.conf.js`, `src/test.ts`, `src/tsconfig.spec.json` and the `test` builder in `angular.json`; keep `test-headless`/`test` scripts working.
-- [ ] Optional: adopt `provideZonelessChangeDetection` and remove `zone.js` from `package.json`/polyfills.
-- [ ] Note in this file that the base branch holds the full 16 -> 20 migration awaiting human review/merge into `main`.
+- [x] Node 20.19+/22+, TypeScript ~5.8; `ng update @angular/core@20 @angular/cli@20 @angular-eslint/schematics@20`, then `@angular/material@20` (20.2.x). Node 20.20 / TS 5.8.3 already satisfied the requirements; the CLI switched `moduleResolution` to `bundler`.
+- [x] `@angular-eslint` 20 enables `prefer-inject`; ran `ng generate @angular/core:inject` to move all constructor DI to `inject()`.
+- [x] Migrate unit tests off the deprecated Karma builder to Vitest (`@angular/build:unit-test`, runner `vitest`, jsdom). Removed `karma.conf.js`, `src/test.ts` and all `karma-*`/`jasmine*` packages; specs moved from Jasmine to Vitest APIs (`vi.spyOn`/`mockReturnValue`, `async`/`await` instead of `waitForAsync`, `textContent` instead of jsdom-unsupported `innerText`). `npm test`/`npm run test-headless` keep working (`ng test` / `ng test --no-watch`).
+  - The unit-test builder needs an `@angular/build:application` build target, so a test-only `test-build` target was added in `angular.json`; the app `build`/`serve` targets stay on the webpack `browser` builder (esbuild switch dropped in Phase 1/3).
+  - `vet-add`/`vet-edit` specs had no active `it()` (Karma tolerated this, Vitest fails an empty suite); kept as `it.todo('should create')`.
+- [ ] ~~Optional: adopt `provideZonelessChangeDetection` and remove `zone.js`.~~ Skipped: not required for 20.x, left for a follow-up.
+- [x] Note in this file that the base branch holds the full 16 -> 20 migration awaiting human review/merge into `main` (see "Final state" below).
 
 DoD:
-- [ ] All `@angular/*` packages on 20.x; unit tests pass on the new runner.
-- [ ] build/lint green locally.
+- [x] All `@angular/*` packages on 20.x; unit tests pass on the new runner (43 passed, 2 todo).
+- [x] build/lint green locally.
 - [ ] Browser smoke test against local backend.
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
+
+## Final state
+
+Once the Phase 4 PR is merged, `feature/praveen-demo-migration` holds the complete Angular 16.2 -> 20.3 migration (RxJS 7, standalone bootstrap, `inject()` DI, Playwright e2e, Vitest unit tests). It awaits human review and a human-performed merge into `main`; Devin does not merge it.
 
 ## Cross-cutting
 
