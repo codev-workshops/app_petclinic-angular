@@ -144,8 +144,8 @@ DoD:
 - [x] All `@angular/*` packages on 22.x (core 22.1.5, material/cdk/moment-adapter 22.1.6, cli 22.1.7); unit tests pass (43 passed, 2 todo).
 - [x] build/test-headless/lint green locally on Node 22.23.2.
 - [x] Browser smoke test against local backend (results on #35; runtime 22.1.5, all flows pass - owners/pets/visits/vets/specialties/pet types CRUD, both Material datepickers, specialty multi-select, deep link, 404, backend-down alert on `owner-edit`; no new Angular 22 console warnings, only the CLI's webpack dev-server deprecation warning).
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] Devin review findings resolved (review completed on `ca63b4d` with 0 bug/security findings).
+- [x] PR ready for review against base; not merged (a human merges #35 into `feature/praveen-demo-migration`).
 
 ## Final state
 
