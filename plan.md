@@ -13,6 +13,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 ## Definition of Done (every phase)
 
 - `npm run build`, `npm run test-headless` and `npm run lint` pass locally.
+- Functional smoke test in a real browser against a local `spring-petclinic-rest` backend (owners/pets/visits/vets/specialties/pet types CRUD, datepicker, backend-down error path); results posted on the PR. Added as of Phase 2 (run retroactively on Phase 1).
 - PR opened as draft against the base branch, Devin review findings resolved, PR marked ready for review.
 - Not merged by Devin; merge (leaf -> base, later base -> main) is done by a human.
 - Status table below updated with the resulting `@angular/core` version and branch/PR reference.
@@ -23,7 +24,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 |-------|------------------------|--------|----|--------|---------------------------------|
 | 0 - Pre-work | 16 (unchanged) | `feature/praveen-demo-migration-phase0-prework` | #28 | Done | 16.2.1 |
 | 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | #29 | Done | 17.3.12 |
-| 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | - | Not started | - |
+| 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | - | Not started | - |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | - | Not started | - |
 
@@ -62,16 +63,17 @@ DoD:
 ### Phase 2 - Angular 18 (target: 18.x)
 
 Scope:
-- [ ] `ng update` core/cli/material/cdk to 18; TypeScript 5.4+.
-- [ ] Remove Protractor: delete the `spring-petclinic-angular-e2e` project and `:protractor` builder from `angular.json`, delete `protractor.conf.js` and `e2e/tsconfig.e2e.json`, remove `protractor` from `package.json`.
-- [ ] Stand up Cypress or Playwright as the e2e runner.
-- [ ] Review Material 3 theming impact on the datepicker / `@angular/material-moment-adapter` in `src/app/pets/pets.module.ts` and `src/app/visits/visits.module.ts`.
+- [x] `ng update @angular/core@18 @angular/cli@18 @angular-eslint/schematics@18`, then `ng update @angular/material@18` (cdk and material-moment-adapter in lockstep, 18.2.14); TypeScript stays 5.4.5. The core migration replaced `HttpClientTestingModule` with `provideHttpClientTesting()` in service specs; the removed `async` test helper was replaced with `waitForAsync`.
+- [x] Remove Protractor: deleted the `spring-petclinic-angular-e2e` project and `:protractor` builder from `angular.json`, `protractor.conf.js`, `e2e/tsconfig.e2e.json` and the Protractor spec/page object; dropped `protractor`, `@types/jasminewd2`, `jasmine-spec-reporter` and `ts-node` from `package.json`.
+- [x] Stand up Playwright as the e2e runner: `@playwright/test`, `playwright.config.ts` (starts `ng serve` itself), `e2e/app.spec.ts`; `npm run e2e` = `playwright test` (run `npx playwright install chromium` once).
+- [x] Review Material 3 theming impact: the app uses the prebuilt `indigo-pink` (M2) theme, which Material 18 still ships, and `MomentDateAdapter` / `MAT_DATE_FORMATS` in `pets.module.ts` / `visits.module.ts` are unchanged in 18; no theming change needed.
 
 DoD:
-- [ ] All `@angular/*` packages on 18.x; no Protractor references; e2e runner works.
-- [ ] build/test/lint green locally.
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] All `@angular/*` packages on 18.x; no Protractor references; e2e runner works.
+- [x] build/test/lint green locally.
+- [x] Browser smoke test against local backend (results on #30).
+- [x] Devin review findings resolved.
+- [x] PR ready for review against base; not merged.
 
 ### Phase 3 - Angular 19 (target: 19.x)
 
@@ -85,6 +87,7 @@ Scope:
 DoD:
 - [ ] All `@angular/*` packages on 19.x; app standalone-bootstrapped.
 - [ ] build/test/lint green locally.
+- [ ] Browser smoke test against local backend.
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
 
@@ -99,6 +102,7 @@ Scope:
 DoD:
 - [ ] All `@angular/*` packages on 20.x; unit tests pass on the new runner.
 - [ ] build/lint green locally.
+- [ ] Browser smoke test against local backend.
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
 
