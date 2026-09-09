@@ -78,15 +78,15 @@ DoD:
 ### Phase 3 - Angular 19 (target: 19.x)
 
 Scope:
-- [ ] `ng update` to 19; TypeScript 5.5/5.6.
-- [ ] Run the standalone components migration schematic.
-- [ ] Convert all NgModules (`AppModule`, `OwnersModule`, `PetsModule`, `VisitsModule`, `PetTypesModule`, `VetsModule`, `SpecialtiesModule`, `PartsModule` and routing modules) to standalone.
-- [ ] Replace `bootstrapModule(AppModule)` in `src/main.ts` with `bootstrapApplication`.
-- [ ] Move module-level providers (e.g. `DateAdapter` / `MAT_DATE_FORMATS` in `src/app/pets/pets.module.ts`) into standalone config.
+- [x] `ng update @angular/core@19 @angular/cli@19 @angular-eslint/schematics@19`, then `ng update @angular/material@19` (19.2.x); the CLI moved TypeScript to 5.8.3 (within Angular 19's supported 5.5-5.8 range) and `zone.js` to `~0.15.1`.
+- [x] Run the standalone components migration schematic (`convert-to-standalone`, `prune-ng-modules`, `standalone-bootstrap`).
+- [x] Convert all NgModules to standalone: `AppModule`, `PartsModule`, `TestingModule` and all feature/routing modules deleted; each `*-routing.module.ts` became a `*.routes.ts` exporting a `Routes` array, composed in `src/app/app.routes.ts` (feature routes first, then `welcome`/`''`/`**`, preserving the previous module import order).
+- [x] Replace `bootstrapModule(AppModule)` in `src/main.ts` with `bootstrapApplication(AppComponent, appConfig)`.
+- [x] Move module-level providers (services, resolvers, `HttpErrorHandler`, `DateAdapter` / `MAT_DATE_FORMATS`) into `src/app/app.config.ts` (`provideRouter`, `provideHttpClient`, `provideAnimations`).
 
 DoD:
-- [ ] All `@angular/*` packages on 19.x; app standalone-bootstrapped.
-- [ ] build/test/lint green locally.
+- [x] All `@angular/*` packages on 19.x; app standalone-bootstrapped.
+- [x] build/test/lint green locally.
 - [ ] Browser smoke test against local backend.
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
