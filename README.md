@@ -15,6 +15,10 @@ Warning: **client only**.
 
 ## Installation
 
+### Prerequisites
+
+Node.js `^22.22.3 || ^24.15.0 || >=26.0.0` (required by Angular 22; see `engines` in [package.json](package.json)) and the matching npm.
+
 1. Update angular-cli to latest version (8.0.3 current)
 as described on [angular-cli github readme.md](https://github.com/angular/angular-cli#updating-angular-cli)
 
@@ -34,8 +38,10 @@ if npm version > 5.0 delete package-lock.json file  ( bug in npm 5.0 - this file
 npm install
 ````
 
-Now project use Angular CLI v.8.0.3 and Angular v.8.0.1
+The project currently uses Angular CLI v22 and Angular v22.
 You can see current dependencies in [package.json](package.json) file.
+
+Linting is configured with ESLint 9 flat config in [eslint.config.js](eslint.config.js); run it with `npm run lint`.
 
 ## Development server
 

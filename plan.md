@@ -28,7 +28,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 22 (
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | Done | 19.2.25 |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | #32 | Done | 20.3.30 |
 | 5 - Angular 21 | 21 | `feature/praveen-demo-migration-phase5-ng21` | #34 | Done | 21.2.22 |
-| 6 - Angular 22 | 22 | `feature/praveen-demo-migration-phase6-ng22` | - | Not started | - |
+| 6 - Angular 22 | 22 | `feature/praveen-demo-migration-phase6-ng22` | #35 | In review | 22.1.5 |
 
 ## Phase checklist
 
@@ -131,27 +131,28 @@ DoD:
 ### Phase 6 - Angular 22 (target: 22.x)
 
 Scope:
-- [ ] Prerequisites: Node `^22.22.3 || ^24.15 || >=26` - the VM runs Node 20.20, so Node must be upgraded first (blueprint/`nvm`, plus `engines` in `package.json` if declared); TypeScript `>=6.0 <6.1` (from 5.9), Vitest stays `^4.0.8`.
-- [ ] `ng update @angular/core@22 @angular/cli@22 @angular-eslint/schematics@22`, then `ng update @angular/material@22` (cdk and material-moment-adapter in lockstep, 22.1.x). Review and apply the CLI's automatic migrations.
-- [ ] TypeScript 6 changes: review new default strictness/removed flags affecting `tsconfig*.json`; fix compile errors surfaced in app and spec code.
-- [ ] Verify `@angular-devkit/build-angular:browser` is still available in 22; if it has been removed, move `build`/`serve` to `@angular/build:application` in this phase (reversing the Phase 1 "dropped" decision only because it becomes mandatory) and re-add the Bootstrap/jQuery/Tether `styles`/`scripts`/`assets` on the new target; drop the separate `test-build` target if `test` can reuse `build`.
-- [ ] Lint toolchain: `@angular-eslint` 22 requires ESLint `^9 || ^10` (repo is on ESLint 8.57 / `@typescript-eslint` 7 / legacy `.eslintrc.json`, still accepted by `@angular-eslint` 21). Upgrade `eslint` to 9.x and `@typescript-eslint/*` to an 8.x+ release compatible with it, convert `.eslintrc.json` to a flat `eslint.config.js` (`ng update @angular-eslint/schematics@22` / `convert-to-flat-config` schematic), and confirm the `@angular-eslint/builder` `lint` target still runs, before `npm run lint` is used as the phase gate.
-- [ ] Re-run `npm run lint` and fix any new `@angular-eslint` 22 rule defaults; re-run `npm run e2e` (Playwright) to confirm the e2e harness still starts `ng serve`.
-- [ ] Optional (deferred, decide at the time): zoneless change detection if not done in Phase 5.
-- [ ] Update "Final state" below to describe the 16 -> 22 result.
+- [x] Prerequisites: Node `^22.22.3 || ^24.15 || >=26`. Installed Node 22.23.2 via `nvm` and used it for every command (the pre-existing VM Node 20.20 makes even `ng update` refuse to run, so the temporary CLI download needs Node 22 first). Added `engines.node` to `package.json`, bumped the `Dockerfile` build image from `node:16.3-alpine` to `node:22-alpine`, and proposed a blueprint update that installs Node 22 in `initialize` and puts it on `PATH` via `$ENVRC`. TypeScript moved to 6.0.3, Vitest stayed on 4.1.11.
+- [x] `ng update @angular/core@22 @angular/cli@22 @angular-eslint/schematics@22`, then `ng update @angular/material@22` (cdk and material-moment-adapter in lockstep, 22.1.6); core/cli landed on 22.1.5/22.1.7. As in Phase 5 the migrations were re-run with `node_modules/prettier` hidden, because the default run reformats whole files with prettier defaults (double quotes) and breaks the repo's single-quote lint rule. Automatic migrations applied: `ChangeDetectionStrategy.Eager` added to all 24 components/directives (Angular 22 makes `OnPush` the default), `provideHttpClient(withXhr())` in `app.config.ts` plus the service specs (22 defaults `HttpClient` to `fetch`), and `nullishCoalescingNotNullable`/`optionalChainNotNullable` extended diagnostics suppressed in `src/tsconfig.{app,spec}.json`. `@angular-eslint` 22 had no migrations to run. Optional migrations `migrate-karma-to-vitest` (already on Vitest) and `use-application-builder` were not run.
+- [x] TypeScript 6 changes: TS 6 turns `strict` on by default and enables `esModuleInterop`, which surfaced 48 pre-existing type errors (`strictPropertyInitialization`, `strictNullChecks`) plus `moment` no longer being callable through `import * as moment`. Kept the repo's existing non-strict posture by pinning `"strict": false` explicitly in `tsconfig.json` (adopting strict mode is an app-wide refactor, out of scope for a version bump - left as follow-up debt), and switched the four `moment` importers to `import moment from 'moment'`. TS 6 also errors on the deprecated `baseUrl` (TS5101): removed it from `tsconfig.json` and `src/tsconfig.{app,spec}.json` and made the one `baseUrl`-dependent import (`vet-add.component.ts` -> `app/specialties/specialty.service`) relative.
+- [x] Builder: `@angular-devkit/build-angular:browser` still ships in 22.1 (deprecated, warns on every build) and builds/serves the app unchanged, so `build`/`serve` stay on it per the Phase 1/3 decision; the test-only `test-build` (`@angular/build:application`) target is unchanged. No move to `@angular/build:application` in this phase - it stays a follow-up, and remains mandatory before webpack support is removed.
+- [x] Lint toolchain: upgraded `eslint` to 9.39.5 and `@typescript-eslint/*` to 8.70 and hand-wrote a flat `eslint.config.js` (there is no `convert-to-flat-config` schematic in `@angular-eslint` 21/22), keeping the same rule set: `tsRecommended` + `templateRecommended`, `component-selector`/`directive-selector` prefixes, `no-empty-lifecycle-method` off, and single quotes via the core `quotes` rule (typescript-eslint 8 removed the `@typescript-eslint/quotes` formatting rule). In `@angular-eslint` 22 the granular plugin packages no longer export `configs`, so the config uses the `angular-eslint` umbrella package (added as a devDependency). `npm run lint` still runs through the `@angular-eslint/builder:lint` target.
+- [x] Re-ran `npm run lint`: the only new failure was `@angular-eslint/prefer-on-push-component-change-detection` (new in 22's recommended set), which fires on exactly the `ChangeDetectionStrategy.Eager` the CLI migration added to preserve behavior; turned the rule off rather than converting the app to `OnPush`. `npm run e2e` (Playwright, 1 test) passes and still starts `ng serve` itself.
+- [ ] ~~Optional (deferred): zoneless change detection.~~ Not adopted: the app stays zone-based with the explicit `provideZoneChangeDetection()` from Phase 5.
+- [x] Update "Final state" below to describe the 16 -> 22 result.
 
 DoD:
-- [ ] All `@angular/*` packages on 22.x; unit tests pass.
-- [ ] build/test-headless/lint green locally on the upgraded Node.
+- [x] All `@angular/*` packages on 22.x (core 22.1.5, material/cdk/moment-adapter 22.1.6, cli 22.1.7); unit tests pass (43 passed, 2 todo).
+- [x] build/test-headless/lint green locally on Node 22.23.2.
 - [ ] Browser smoke test against local backend (results on the PR).
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
 
 ## Final state
 
-After Phase 4, `feature/praveen-demo-migration` holds the complete Angular 16.2 -> 20.3 migration (RxJS 7, standalone bootstrap, `inject()` DI, Playwright e2e, Vitest unit tests). Phases 5 and 6 extend the same base branch to Angular 21 and 22 via the same leaf-branch/PR flow. At every point the base branch awaits human review and a human-performed merge into `main`; Devin does not merge it.
+After Phase 6, `feature/praveen-demo-migration` holds the complete Angular 16.2 -> 22.1 migration: RxJS 7, standalone components bootstrapped with `bootstrapApplication`, `inject()` DI, `@if`/`@for` control flow, Playwright e2e, Vitest 4 unit tests, TypeScript 6, ESLint 9 with a flat config, and Node 22 as the required runtime. Deliberately not adopted: zoneless change detection (the app keeps an explicit `provideZoneChangeDetection()`), `OnPush` change detection (every component carries the migration's `ChangeDetectionStrategy.Eager`), TypeScript `strict` mode (pinned off), and the `@angular/build:application` builder (`build`/`serve` still use the deprecated webpack `browser` builder). The base branch awaits human review and a human-performed merge into `main`; Devin does not merge it.
 
 ## Cross-cutting
 
 - Bump `@angular/material` and `@angular/cdk` in lockstep with `@angular/core` in every phase.
 - Consider migrating `moment` / `@angular/material-moment-adapter` (listed in `allowedCommonJsDependencies` in `angular.json`) to Luxon or the native date adapter.
+- Follow-ups left after Phase 6: move `build`/`serve` off the deprecated webpack `browser` builder to `@angular/build:application`; adopt TypeScript `strict` (48 errors as of 22.1); adopt `OnPush`/signals instead of `ChangeDetectionStrategy.Eager`; revisit zoneless change detection.
