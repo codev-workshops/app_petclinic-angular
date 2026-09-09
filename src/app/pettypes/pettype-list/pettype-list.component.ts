@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {PetType} from '../pettype';
 import {Router} from '@angular/router';
 import {PetTypeService} from '../pettype.service';
@@ -12,6 +12,7 @@ import { PettypeAddComponent } from '../pettype-add/pettype-add.component';
     selector: 'app-pettype-list',
     templateUrl: './pettype-list.component.html',
     styleUrls: ['./pettype-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, PettypeAddComponent]
 })
 export class PettypeListComponent implements OnInit {

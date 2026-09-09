@@ -21,11 +21,12 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
     selector: 'app-welcome',
     templateUrl: './welcome.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {

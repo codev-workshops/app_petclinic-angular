@@ -21,7 +21,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Pet} from '../pet';
 import {PetService} from '../pet.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -39,6 +39,7 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
     selector: 'app-pet-edit',
     templateUrl: './pet-edit.component.html',
     styleUrls: ['./pet-edit.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, DatePipe]
 })
 export class PetEditComponent implements OnInit {

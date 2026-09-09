@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Visit} from '../visit';
 import {VisitService} from '../visit.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -40,6 +40,7 @@ import { VisitListComponent } from '../visit-list/visit-list.component';
     selector: 'app-visit-add',
     templateUrl: './visit-add.component.html',
     styleUrls: ['./visit-add.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, VisitListComponent, DatePipe]
 })
 export class VisitAddComponent implements OnInit {

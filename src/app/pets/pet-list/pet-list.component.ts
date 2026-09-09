@@ -21,7 +21,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Router} from '@angular/router';
 import {PetService} from '../pet.service';
 import {Pet} from '../pet';
@@ -32,6 +32,7 @@ import { VisitListComponent } from '../../visits/visit-list/visit-list.component
     selector: 'app-pet-list',
     templateUrl: './pet-list.component.html',
     styleUrls: ['./pet-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [VisitListComponent]
 })
 export class PetListComponent implements OnInit {

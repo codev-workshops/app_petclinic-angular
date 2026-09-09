@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Visit} from '../visit';
 import {Pet} from '../../pets/pet';
 import {Owner} from '../../owners/owner';
@@ -39,6 +39,7 @@ import { DatePipe } from '@angular/common';
     selector: 'app-visit-edit',
     templateUrl: './visit-edit.component.html',
     styleUrls: ['./visit-edit.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, DatePipe]
 })
 export class VisitEditComponent implements OnInit {

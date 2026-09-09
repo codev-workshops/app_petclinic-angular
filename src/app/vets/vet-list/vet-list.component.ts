@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Vet} from '../vet';
 import {VetService} from '../vet.service';
 import {Router} from '@angular/router';
@@ -31,6 +31,7 @@ import { finalize } from 'rxjs/operators';
     selector: 'app-vet-list',
     templateUrl: './vet-list.component.html',
     styleUrls: ['./vet-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: []
 })
 export class VetListComponent implements OnInit {

@@ -26,7 +26,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 // Other imports
 import { TestBed } from '@angular/core/testing';
 import {Mock} from 'vitest';
-import { HttpClient, HttpErrorResponse, HttpResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse, provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 import { HttpErrorHandler } from '../error.service';
 
@@ -42,7 +42,7 @@ describe('OwnerService', () => {
   let httpClientSpy: { get: Mock };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OwnerService, HttpErrorHandler, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+      providers: [OwnerService, HttpErrorHandler, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()]
     });
 
     httpTestingController = TestBed.inject(HttpTestingController);

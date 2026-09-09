@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {OwnerService} from '../owner.service';
 import {Owner} from '../owner';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
@@ -32,6 +32,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-owner-list',
     templateUrl: './owner-list.component.html',
     styleUrls: ['./owner-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, RouterLinkActive, RouterLink]
 })
 export class OwnerListComponent implements OnInit {

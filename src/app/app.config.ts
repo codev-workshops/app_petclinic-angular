@@ -1,6 +1,6 @@
 import {ApplicationConfig} from '@angular/core';
 import {provideRouter} from '@angular/router';
-import {provideHttpClient} from '@angular/common/http';
+import {provideHttpClient, withXhr} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MomentDateAdapter} from '@angular/material-moment-adapter';
@@ -30,7 +30,7 @@ export const MY_DATE_FORMATS = {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
-    provideHttpClient(),
+    provideHttpClient(withXhr()),
     provideAnimations(),
     HttpErrorHandler,
     OwnerService,
