@@ -88,8 +88,8 @@ DoD:
 - [x] All `@angular/*` packages on 19.x; app standalone-bootstrapped.
 - [x] build/test/lint green locally.
 - [x] Browser smoke test against local backend (results on #31).
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] Devin review findings resolved (review on #31 reported no findings).
+- [x] PR ready for review against base; not merged.
 
 ### Phase 4 - Angular 20 (target: 20.x)
 
