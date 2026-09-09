@@ -27,14 +27,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {SpecialtyService} from '../../specialties/specialty.service';
 import {Specialty} from '../../specialties/specialty';
 import { FormBuilder, FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatFormField, MatSelect, MatOption } from '@angular/material/select';
 
 @Component({
     selector: 'app-vet-edit',
     templateUrl: './vet-edit.component.html',
     styleUrls: ['./vet-edit.component.css'],
-    imports: [FormsModule, ReactiveFormsModule, NgIf, MatFormField, MatSelect, NgFor, MatOption]
+    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatSelect, MatOption]
 })
 export class VetEditComponent implements OnInit {
   private formBuilder = inject(FormBuilder);

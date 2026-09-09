@@ -1,6 +1,6 @@
-# Angular 16 -> 20 Migration Plan
+# Angular 16 -> 22 Migration Plan
 
-Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
+Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 22 (Phases 0-4 took it to Angular 20; Phases 5-6 continue to 21 and 22 under the same branching model, DoD and verification methods).
 
 ## Branching model
 
@@ -27,6 +27,8 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | Done | 19.2.25 |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | #32 | Done | 20.3.30 |
+| 5 - Angular 21 | 21 | `feature/praveen-demo-migration-phase5-ng21` | #34 | Done | 21.2.22 |
+| 6 - Angular 22 | 22 | `feature/praveen-demo-migration-phase6-ng22` | - | Not started | - |
 
 ## Phase checklist
 
@@ -100,7 +102,7 @@ Scope:
   - The unit-test builder needs an `@angular/build:application` build target, so a test-only `test-build` target was added in `angular.json`; the app `build`/`serve` targets stay on the webpack `browser` builder (esbuild switch dropped in Phase 1/3).
   - `vet-add`/`vet-edit` specs had no active `it()` (Karma tolerated this, Vitest fails an empty suite); kept as `it.todo('should create')`.
 - [ ] ~~Optional: adopt `provideZonelessChangeDetection` and remove `zone.js`.~~ Skipped: not required for 20.x, left for a follow-up.
-- [x] Note in this file that the base branch holds the full 16 -> 20 migration awaiting human review/merge into `main` (see "Final state" below).
+- [x] Note in this file that the base branch holds the full 16 -> 20 migration awaiting human review/merge into `main` (see "Final state" below; superseded by Phases 5-6, which extend the same base branch).
 
 DoD:
 - [x] All `@angular/*` packages on 20.x; unit tests pass on the new runner (43 passed, 2 todo).
@@ -109,9 +111,45 @@ DoD:
 - [x] Devin review findings resolved (review on #32 reported no findings).
 - [x] PR ready for review against base; not merged.
 
+### Phase 5 - Angular 21 (target: 21.x)
+
+Scope:
+- [x] Prerequisites: Node `^20.19 || ^22.12 || >=24` (VM Node 20.20 is fine), TypeScript `>=5.9 <6.0` (from 5.8.3), `@angular/build` 21 requires Vitest `^4.0.8` (from 3.2.4). `ng update` moved TypeScript to 5.9.3, Vitest to 4.1.11 and `@types/node` to 26.5.0 itself; Node 20.20 was accepted (note: the *latest* CLI, 22.x, already requires Node 22.22+, so `ng update --migrate-only` without a local CLI fails on this VM - run migrations through `node_modules/.bin/ng`).
+- [x] `ng update @angular/core@21 @angular/cli@21 @angular-eslint/schematics@21`, then `ng update @angular/material@21` (cdk and material-moment-adapter in lockstep, 21.2.14). Automatic migrations applied: `tsconfig.json` dropped the `lib: [es2017, dom]` override (CLI default es2022); `src/main.ts` now passes `provideZoneChangeDetection()` explicitly (Angular 21 defaults new bootstraps to zoneless, so this keeps the app zone-based); the mandatory `control-flow-migration` converted every template from `*ngIf`/`*ngFor` to `@if`/`@for` and dropped the `NgIf`/`NgFor` imports. The migration was re-run with `format` disabled (prettier hidden) because the default run reformatted whole files with prettier defaults (double quotes, failing the repo's single-quote lint rule). Optional migrations `use-application-builder` and `router-current-navigation` were not run (app `build`/`serve` stay on `@angular-devkit/build-angular:browser`, still shipped in 21.2).
+- [x] Upgrade `vitest` to 4.x (4.1.11 via `ng update`; `jsdom` 26.1 unchanged); `angular.json` `test` stays on `@angular/build:unit-test` with the `test-build` target. `npm test`/`npm run test-headless` work (43 passed, 2 todo).
+- [x] Re-run `npm run lint`: no new `@angular-eslint` 21 rule failures. Only fix needed was type-related: Angular 21 type-checks `@HostListener` argument lists against the handler signature, so `RouterLinkStubDirective` in `src/app/testing/router-stubs.ts` dropped the unused `['$event']` argument.
+- [x] Re-checked `it.todo` in `vet-add`/`vet-edit` specs and the `moment` namespace-import warnings from the esbuild test bundle: still warnings only, left as is.
+- [ ] ~~Optional (deferred, decide at the time): `provideZonelessChangeDetection` and drop `zone.js`.~~ Not adopted: app stays on zone.js with an explicit `provideZoneChangeDetection()`.
+
+DoD:
+- [x] All `@angular/*` packages on 21.x (core 21.2.22, material/cdk 21.2.14); unit tests pass on Vitest 4 (43 passed, 2 todo).
+- [x] build/test-headless/lint green locally.
+- [x] Browser smoke test against local backend (results on #34; runtime 21.2.22, all flows pass; the owners list showing empty-state text instead of an alert when the backend is down is pre-existing, `owner-edit` shows the alert).
+- [x] Devin review findings resolved (review on #34 reported no findings).
+- [x] PR ready for review against base; not merged.
+
+### Phase 6 - Angular 22 (target: 22.x)
+
+Scope:
+- [ ] Prerequisites: Node `^22.22.3 || ^24.15 || >=26` - the VM runs Node 20.20, so Node must be upgraded first (blueprint/`nvm`, plus `engines` in `package.json` if declared); TypeScript `>=6.0 <6.1` (from 5.9), Vitest stays `^4.0.8`.
+- [ ] `ng update @angular/core@22 @angular/cli@22 @angular-eslint/schematics@22`, then `ng update @angular/material@22` (cdk and material-moment-adapter in lockstep, 22.1.x). Review and apply the CLI's automatic migrations.
+- [ ] TypeScript 6 changes: review new default strictness/removed flags affecting `tsconfig*.json`; fix compile errors surfaced in app and spec code.
+- [ ] Verify `@angular-devkit/build-angular:browser` is still available in 22; if it has been removed, move `build`/`serve` to `@angular/build:application` in this phase (reversing the Phase 1 "dropped" decision only because it becomes mandatory) and re-add the Bootstrap/jQuery/Tether `styles`/`scripts`/`assets` on the new target; drop the separate `test-build` target if `test` can reuse `build`.
+- [ ] Lint toolchain: `@angular-eslint` 22 requires ESLint `^9 || ^10` (repo is on ESLint 8.57 / `@typescript-eslint` 7 / legacy `.eslintrc.json`, still accepted by `@angular-eslint` 21). Upgrade `eslint` to 9.x and `@typescript-eslint/*` to an 8.x+ release compatible with it, convert `.eslintrc.json` to a flat `eslint.config.js` (`ng update @angular-eslint/schematics@22` / `convert-to-flat-config` schematic), and confirm the `@angular-eslint/builder` `lint` target still runs, before `npm run lint` is used as the phase gate.
+- [ ] Re-run `npm run lint` and fix any new `@angular-eslint` 22 rule defaults; re-run `npm run e2e` (Playwright) to confirm the e2e harness still starts `ng serve`.
+- [ ] Optional (deferred, decide at the time): zoneless change detection if not done in Phase 5.
+- [ ] Update "Final state" below to describe the 16 -> 22 result.
+
+DoD:
+- [ ] All `@angular/*` packages on 22.x; unit tests pass.
+- [ ] build/test-headless/lint green locally on the upgraded Node.
+- [ ] Browser smoke test against local backend (results on the PR).
+- [ ] Devin review findings resolved.
+- [ ] PR ready for review against base; not merged.
+
 ## Final state
 
-Once the Phase 4 PR is merged, `feature/praveen-demo-migration` holds the complete Angular 16.2 -> 20.3 migration (RxJS 7, standalone bootstrap, `inject()` DI, Playwright e2e, Vitest unit tests). It awaits human review and a human-performed merge into `main`; Devin does not merge it.
+After Phase 4, `feature/praveen-demo-migration` holds the complete Angular 16.2 -> 20.3 migration (RxJS 7, standalone bootstrap, `inject()` DI, Playwright e2e, Vitest unit tests). Phases 5 and 6 extend the same base branch to Angular 21 and 22 via the same leaf-branch/PR flow. At every point the base branch awaits human review and a human-performed merge into `main`; Devin does not merge it.
 
 ## Cross-cutting
 
