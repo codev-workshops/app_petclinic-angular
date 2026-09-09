@@ -22,7 +22,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 | Phase | Target Angular version | Branch | PR | Status | Resulting @angular/core version |
 |-------|------------------------|--------|----|--------|---------------------------------|
 | 0 - Pre-work | 16 (unchanged) | `feature/praveen-demo-migration-phase0-prework` | #28 | Done | 16.2.1 |
-| 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | - | Not started | - |
+| 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | #29 | Done | 17.3.12 |
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | - | Not started | - |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | - | Not started | - |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | - | Not started | - |
@@ -48,16 +48,16 @@ DoD:
 ### Phase 1 - Angular 17 (target: 17.x)
 
 Scope:
-- [ ] Node 18.13+/20.9+, TypeScript 5.2-5.4, `zone.js` `~0.14`.
-- [ ] `ng update @angular/core@17 @angular/cli@17`, then `ng update @angular/material@17` (cdk in lockstep).
-- [ ] Replace `HttpClientModule` in `src/app/app.module.ts` with `provideHttpClient()`.
-- [ ] Optional: move `angular.json` from `@angular-devkit/build-angular:browser` to the esbuild `application` builder; verify jQuery/Tether/Bootstrap globals still inject.
+- [x] Node 18.13+/20.9+ (VM runs Node 20), TypeScript 5.4.5, `zone.js` `~0.14.10`.
+- [x] `ng update @angular/core@17 @angular/cli@17 @angular-eslint/schematics@17`, then `ng update @angular/material@17` (cdk and material-moment-adapter in lockstep, 17.3.10).
+- [x] Replace `HttpClientModule` in `src/app/app.module.ts` with `provideHttpClient()`.
+- [ ] Optional (deferred): move `angular.json` from `@angular-devkit/build-angular:browser` to the esbuild `application` builder; verify jQuery/Tether/Bootstrap globals still inject.
 
 DoD:
-- [ ] All `@angular/*` packages on 17.x.
-- [ ] build/test/lint green locally.
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] All `@angular/*` packages on 17.x.
+- [x] build/test/lint green locally.
+- [x] Devin review findings resolved.
+- [x] PR ready for review against base; not merged.
 
 ### Phase 2 - Angular 18 (target: 18.x)
 
