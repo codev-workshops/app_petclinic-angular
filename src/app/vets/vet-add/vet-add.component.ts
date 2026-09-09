@@ -27,13 +27,13 @@ import {Vet} from '../vet';
 import {Router} from '@angular/router';
 import {VetService} from '../vet.service';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-vet-add',
     templateUrl: './vet-add.component.html',
     styleUrls: ['./vet-add.component.css'],
-    imports: [FormsModule, NgIf, NgFor]
+    imports: [FormsModule]
 })
 export class VetAddComponent implements OnInit {
   private specialtyService = inject(SpecialtyService);

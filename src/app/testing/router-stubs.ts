@@ -33,7 +33,7 @@ export class RouterLinkStubDirective {
   @Input() linkParams: any;
   navigatedTo: any = null;
 
-  @HostListener('click', ['$event'])
+  @HostListener('click')
   onClick() {
     this.navigatedTo = this.linkParams;
   }

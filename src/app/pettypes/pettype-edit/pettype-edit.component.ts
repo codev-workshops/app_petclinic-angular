@@ -25,13 +25,13 @@ import {PetType} from '../pettype';
 import {PetTypeService} from '../pettype.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-pettype-edit',
     templateUrl: './pettype-edit.component.html',
     styleUrls: ['./pettype-edit.component.css'],
-    imports: [FormsModule, NgIf]
+    imports: [FormsModule]
 })
 export class PettypeEditComponent implements OnInit {
   private pettypeService = inject(PetTypeService);

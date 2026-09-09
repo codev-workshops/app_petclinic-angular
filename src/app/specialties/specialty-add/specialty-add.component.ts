@@ -20,13 +20,13 @@ import { Component, EventEmitter, OnInit, Output, ViewChild, inject } from '@ang
 import { NgForm, FormsModule } from '@angular/forms';
 import { Specialty } from '../specialty';
 import { SpecialtyService } from '../specialty.service';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'app-specialty-add',
     templateUrl: './specialty-add.component.html',
     styleUrls: ['./specialty-add.component.css'],
-    imports: [FormsModule, NgIf]
+    imports: [FormsModule]
 })
 export class SpecialtyAddComponent implements OnInit {
   private specialtyService = inject(SpecialtyService);

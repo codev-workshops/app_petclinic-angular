@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {PetTypeService} from '../pettype.service';
 import {Specialty} from '../../specialties/specialty';
 import { finalize } from 'rxjs/operators';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { PettypeAddComponent } from '../pettype-add/pettype-add.component';
 
@@ -12,7 +12,7 @@ import { PettypeAddComponent } from '../pettype-add/pettype-add.component';
     selector: 'app-pettype-list',
     templateUrl: './pettype-list.component.html',
     styleUrls: ['./pettype-list.component.css'],
-    imports: [NgFor, FormsModule, NgIf, PettypeAddComponent]
+    imports: [FormsModule, PettypeAddComponent]
 })
 export class PettypeListComponent implements OnInit {
   private pettypeService = inject(PetTypeService);

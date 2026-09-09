@@ -27,7 +27,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 22 (
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | Done | 19.2.25 |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | #32 | Done | 20.3.30 |
-| 5 - Angular 21 | 21 | `feature/praveen-demo-migration-phase5-ng21` | - | Not started | - |
+| 5 - Angular 21 | 21 | `feature/praveen-demo-migration-phase5-ng21` | #34 | Done | 21.2.22 |
 | 6 - Angular 22 | 22 | `feature/praveen-demo-migration-phase6-ng22` | - | Not started | - |
 
 ## Phase checklist
@@ -114,19 +114,19 @@ DoD:
 ### Phase 5 - Angular 21 (target: 21.x)
 
 Scope:
-- [ ] Prerequisites: Node `^20.19 || ^22.12 || >=24` (VM Node 20.20 is fine), TypeScript `>=5.9 <6.0` (from 5.8.3), `@angular/build` 21 requires Vitest `^4.0.8` (from 3.2.4).
-- [ ] `ng update @angular/core@21 @angular/cli@21 @angular-eslint/schematics@21`, then `ng update @angular/material@21` (cdk and material-moment-adapter in lockstep, 21.2.x). Review and apply the CLI's automatic migrations; check for deprecation/removal notes affecting `@angular-devkit/build-angular:browser` (app `build`/`serve` stay on it while it is still shipped; do not switch to the `application` builder unless the update forces it).
-- [ ] Upgrade `vitest` to 4.x and `jsdom` as needed; keep `angular.json` `test` on `@angular/build:unit-test` (Vitest is the default runner from 21) and confirm the `test-build` target still satisfies the builder. `npm test`/`npm run test-headless` keep working.
-- [ ] Re-run `npm run lint` and fix any new `@angular-eslint` 21 rule defaults (e.g. signal/`inject`/template rules); prefer the CLI schematics over hand edits.
-- [ ] Re-check `it.todo` in `vet-add`/`vet-edit` specs and the `moment` namespace-import warnings from the esbuild test bundle; fix only if they become errors.
-- [ ] Optional (deferred, decide at the time): `provideZonelessChangeDetection` and drop `zone.js`; Angular 21 makes zoneless the default for new apps but existing zone-based apps keep working.
+- [x] Prerequisites: Node `^20.19 || ^22.12 || >=24` (VM Node 20.20 is fine), TypeScript `>=5.9 <6.0` (from 5.8.3), `@angular/build` 21 requires Vitest `^4.0.8` (from 3.2.4). `ng update` moved TypeScript to 5.9.3, Vitest to 4.1.11 and `@types/node` to 26.5.0 itself; Node 20.20 was accepted (note: the *latest* CLI, 22.x, already requires Node 22.22+, so `ng update --migrate-only` without a local CLI fails on this VM - run migrations through `node_modules/.bin/ng`).
+- [x] `ng update @angular/core@21 @angular/cli@21 @angular-eslint/schematics@21`, then `ng update @angular/material@21` (cdk and material-moment-adapter in lockstep, 21.2.14). Automatic migrations applied: `tsconfig.json` dropped the `lib: [es2017, dom]` override (CLI default es2022); `src/main.ts` now passes `provideZoneChangeDetection()` explicitly (Angular 21 defaults new bootstraps to zoneless, so this keeps the app zone-based); the mandatory `control-flow-migration` converted every template from `*ngIf`/`*ngFor` to `@if`/`@for` and dropped the `NgIf`/`NgFor` imports. The migration was re-run with `format` disabled (prettier hidden) because the default run reformatted whole files with prettier defaults (double quotes, failing the repo's single-quote lint rule). Optional migrations `use-application-builder` and `router-current-navigation` were not run (app `build`/`serve` stay on `@angular-devkit/build-angular:browser`, still shipped in 21.2).
+- [x] Upgrade `vitest` to 4.x (4.1.11 via `ng update`; `jsdom` 26.1 unchanged); `angular.json` `test` stays on `@angular/build:unit-test` with the `test-build` target. `npm test`/`npm run test-headless` work (43 passed, 2 todo).
+- [x] Re-run `npm run lint`: no new `@angular-eslint` 21 rule failures. Only fix needed was type-related: Angular 21 type-checks `@HostListener` argument lists against the handler signature, so `RouterLinkStubDirective` in `src/app/testing/router-stubs.ts` dropped the unused `['$event']` argument.
+- [x] Re-checked `it.todo` in `vet-add`/`vet-edit` specs and the `moment` namespace-import warnings from the esbuild test bundle: still warnings only, left as is.
+- [ ] ~~Optional (deferred, decide at the time): `provideZonelessChangeDetection` and drop `zone.js`.~~ Not adopted: app stays on zone.js with an explicit `provideZoneChangeDetection()`.
 
 DoD:
-- [ ] All `@angular/*` packages on 21.x; unit tests pass on Vitest 4.
-- [ ] build/test-headless/lint green locally.
-- [ ] Browser smoke test against local backend (results on the PR).
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] All `@angular/*` packages on 21.x (core 21.2.22, material/cdk 21.2.14); unit tests pass on Vitest 4 (43 passed, 2 todo).
+- [x] build/test-headless/lint green locally.
+- [x] Browser smoke test against local backend (results on #34; runtime 21.2.22, all flows pass; the owners list showing empty-state text instead of an alert when the backend is down is pre-existing, `owner-edit` shows the alert).
+- [x] Devin review findings resolved (review on #34 reported no findings).
+- [x] PR ready for review against base; not merged.
 
 ### Phase 6 - Angular 22 (target: 22.x)
 

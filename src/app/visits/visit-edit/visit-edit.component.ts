@@ -33,13 +33,13 @@ import {OwnerService} from '../../owners/owner.service';
 import {PetService} from '../../pets/pet.service';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { NgIf, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-visit-edit',
     templateUrl: './visit-edit.component.html',
     styleUrls: ['./visit-edit.component.css'],
-    imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, NgIf, DatePipe]
+    imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, DatePipe]
 })
 export class VisitEditComponent implements OnInit {
   private visitService = inject(VisitService);
