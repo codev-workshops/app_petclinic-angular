@@ -20,7 +20,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 
 | Phase | Target Angular version | Branch | PR | Status | Resulting @angular/core version |
 |-------|------------------------|--------|----|--------|---------------------------------|
-| 0 - Pre-work | 16 (unchanged) | `feature/praveen-demo-migration-phase0-prework` | #TBD | Done | 16.2.1 |
+| 0 - Pre-work | 16 (unchanged) | `feature/praveen-demo-migration-phase0-prework` | #28 | Done | 16.2.1 |
 | 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | - | Not started | - |
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | - | Not started | - |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | - | Not started | - |
