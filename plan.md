@@ -7,6 +7,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 - Base branch: `feature/praveen-demo-migration` (created once from `main`, receives no direct commits).
 - Each phase is a leaf branch created from the current tip of the base branch and merged back via PR.
 - Every PR targets `feature/praveen-demo-migration`; nothing targets `main`.
+- Once a phase PR is merged, delete its leaf branch (remote and local) so only the base branch and the in-progress leaf remain.
 - There is no CI: `npm run build`, `npm run test-headless` and `npm run lint` are run locally before each PR.
 
 ## Definition of Done (every phase)
