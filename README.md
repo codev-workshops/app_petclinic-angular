@@ -164,7 +164,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run `npm run e2e` to execute the end-to-end tests via [Playwright](https://playwright.dev/) (the dev server is started automatically; the app expects the REST backend on port 9966).
 Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Further help
