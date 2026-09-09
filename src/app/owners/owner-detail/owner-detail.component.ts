@@ -24,7 +24,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import {OwnerService} from '../owner.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Owner} from '../owner';
-import { NgFor } from '@angular/common';
+
 import { PetListComponent } from '../../pets/pet-list/pet-list.component';
 
 
@@ -32,7 +32,7 @@ import { PetListComponent } from '../../pets/pet-list/pet-list.component';
     selector: 'app-owner-detail',
     templateUrl: './owner-detail.component.html',
     styleUrls: ['./owner-detail.component.css'],
-    imports: [NgFor, PetListComponent]
+    imports: [PetListComponent]
 })
 export class OwnerDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);

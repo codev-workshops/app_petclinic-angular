@@ -32,14 +32,14 @@ import {PetTypeService} from '../../pettypes/pettype.service';
 import * as moment from 'moment';
 import {OwnerService} from '../../owners/owner.service';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
     selector: 'app-pet-edit',
     templateUrl: './pet-edit.component.html',
     styleUrls: ['./pet-edit.component.css'],
-    imports: [FormsModule, NgIf, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, NgFor, DatePipe]
+    imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, DatePipe]
 })
 export class PetEditComponent implements OnInit {
   private petService = inject(PetService);

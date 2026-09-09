@@ -33,14 +33,14 @@ import * as moment from 'moment';
 import {OwnerService} from '../../owners/owner.service';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { NgIf, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { VisitListComponent } from '../visit-list/visit-list.component';
 
 @Component({
     selector: 'app-visit-add',
     templateUrl: './visit-add.component.html',
     styleUrls: ['./visit-add.component.css'],
-    imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, NgIf, VisitListComponent, DatePipe]
+    imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, VisitListComponent, DatePipe]
 })
 export class VisitAddComponent implements OnInit {
   private visitService = inject(VisitService);

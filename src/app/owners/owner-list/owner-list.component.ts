@@ -26,13 +26,13 @@ import {Owner} from '../owner';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'app-owner-list',
     templateUrl: './owner-list.component.html',
     styleUrls: ['./owner-list.component.css'],
-    imports: [FormsModule, NgIf, NgFor, RouterLinkActive, RouterLink]
+    imports: [FormsModule, RouterLinkActive, RouterLink]
 })
 export class OwnerListComponent implements OnInit {
   private router = inject(Router);
