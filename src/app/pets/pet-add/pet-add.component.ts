@@ -30,7 +30,7 @@ import {PetTypeService} from '../../pettypes/pettype.service';
 import {PetService} from '../pet.service';
 import {OwnerService} from '../../owners/owner.service';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
