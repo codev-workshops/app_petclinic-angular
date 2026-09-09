@@ -22,7 +22,8 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {MockInstance} from 'vitest';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {SpecialtyListComponent} from './specialty-list.component';
@@ -32,7 +33,6 @@ import {Specialty} from '../specialty';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteStub, RouterStub} from '../../testing/router-stubs';
 import {Observable, of} from 'rxjs';
-import Spy = jasmine.Spy;
 
 class SpecialityServiceStub {
   deleteSpecialty(specId: string): Observable<number> {
@@ -48,12 +48,12 @@ describe('SpecialtyListComponent', () => {
   let component: SpecialtyListComponent;
   let fixture: ComponentFixture<SpecialtyListComponent>;
   let specialtyService: SpecialtyService;
-  let spy: Spy;
+  let spy: MockInstance;
   let testSpecialties: Specialty[];
   let responseStatus: number;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, SpecialtyListComponent],
     providers: [
@@ -61,9 +61,8 @@ describe('SpecialtyListComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
     ]
-})
-      .compileComponents();
-  }));
+}).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SpecialtyListComponent);
@@ -77,8 +76,8 @@ describe('SpecialtyListComponent', () => {
     responseStatus = 204; // success delete return NO_CONTENT
     component.specialties = testSpecialties;
 
-    spy = spyOn(specialtyService, 'deleteSpecialty')
-      .and.returnValue(of(responseStatus));
+    spy = vi.spyOn(specialtyService, 'deleteSpecialty')
+      .mockReturnValue(of(responseStatus));
 
     fixture.detectChanges();
   });
@@ -90,7 +89,7 @@ describe('SpecialtyListComponent', () => {
   it('should call deleteSpecialty() method', () => {
     fixture.detectChanges();
     component.deleteSpecialty(component.specialties[0]);
-    expect(spy.calls.any()).toBe(true, 'deleteSpecialty called');
+    expect(spy).toHaveBeenCalled();
   });
 
 });

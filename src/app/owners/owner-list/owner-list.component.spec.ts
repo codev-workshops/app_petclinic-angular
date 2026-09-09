@@ -22,7 +22,8 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {MockInstance} from 'vitest';
 import {By} from '@angular/platform-browser';
 import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
 
@@ -39,7 +40,6 @@ import {OwnerDetailComponent} from '../owner-detail/owner-detail.component';
 import {DummyComponent} from '../../testing/dummy.component';
 import {OwnerAddComponent} from '../owner-add/owner-add.component';
 import {OwnerEditComponent} from '../owner-edit/owner-edit.component';
-import Spy = jasmine.Spy;
 
 
 class OwnerServiceStub {
@@ -53,7 +53,7 @@ describe('OwnerListComponent', () => {
   let component: OwnerListComponent;
   let fixture: ComponentFixture<OwnerListComponent>;
   let ownerService = new OwnerServiceStub();
-  let spy: Spy;
+  let spy: MockInstance;
   let de: DebugElement;
   let el: HTMLElement;
 
@@ -69,8 +69,8 @@ describe('OwnerListComponent', () => {
   };
   let testOwners: Owner[];
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     schemas: [NO_ERRORS_SCHEMA],
     imports: [CommonModule, FormsModule, OwnerListComponent, DummyComponent,
         RouterTestingModule.withRoutes([{ path: 'owners', component: OwnerListComponent },
@@ -82,9 +82,8 @@ describe('OwnerListComponent', () => {
         { provide: OwnerService, useValue: ownerService },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
     ]
-})
-      .compileComponents();
-  }));
+}).compileComponents();
+  });
 
   beforeEach(() => {
     testOwners = [{
@@ -108,8 +107,8 @@ describe('OwnerListComponent', () => {
     fixture = TestBed.createComponent(OwnerListComponent);
     component = fixture.componentInstance;
     ownerService = fixture.debugElement.injector.get(OwnerService);
-    spy = spyOn(ownerService, 'getOwners')
-      .and.returnValue(of(testOwners));
+    spy = vi.spyOn(ownerService, 'getOwners')
+      .mockReturnValue(of(testOwners));
 
   });
 
@@ -119,18 +118,18 @@ describe('OwnerListComponent', () => {
 
   it('should call ngOnInit() method', () => {
     fixture.detectChanges();
-    expect(spy.calls.any()).toBe(true, 'getOwners called');
+    expect(spy).toHaveBeenCalled();
   });
 
 
-  it(' should show full name after getOwners observable (async) ', waitForAsync(() => {
+  it(' should show full name after getOwners observable (async) ', async () => {
     fixture.detectChanges();
-    fixture.whenStable().then(() => { // wait for async getOwners
+    await fixture.whenStable().then(() => { // wait for async getOwners
       fixture.detectChanges();        // update view with name
       de = fixture.debugElement.query(By.css('.ownerFullName'));
       el = de.nativeElement;
-      expect(el.innerText).toBe((testOwner.firstName.toString() + ' ' + testOwner.lastName.toString()));
+      expect(el.textContent.trim()).toBe((testOwner.firstName.toString() + ' ' + testOwner.lastName.toString()));
     });
-  }));
+  });
 
 });

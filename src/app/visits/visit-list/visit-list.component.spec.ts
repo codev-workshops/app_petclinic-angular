@@ -22,7 +22,8 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {MockInstance} from 'vitest';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {VisitListComponent} from './visit-list.component';
@@ -33,7 +34,6 @@ import {ActivatedRouteStub, RouterStub} from '../../testing/router-stubs';
 import {Visit} from '../visit';
 import {Pet} from '../../pets/pet';
 import {Observable, of} from 'rxjs';
-import Spy = jasmine.Spy;
 
 class VisitServiceStub {
   deleteVisit(visitId: string): Observable<number> {
@@ -47,11 +47,11 @@ describe('VisitListComponent', () => {
   let visitService: VisitService;
   let testVisits: Visit[];
   let testPet: Pet;
-  let spy: Spy;
+  let spy: MockInstance;
   let responseStatus: number;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, VisitListComponent],
     providers: [
@@ -59,9 +59,8 @@ describe('VisitListComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
     ]
-})
-      .compileComponents();
-  }));
+}).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VisitListComponent);
@@ -94,8 +93,8 @@ describe('VisitListComponent', () => {
     responseStatus = 204; // success delete return NO_CONTENT
     component.visits = testVisits;
 
-    spy = spyOn(visitService, 'deleteVisit')
-      .and.returnValue(of(responseStatus));
+    spy = vi.spyOn(visitService, 'deleteVisit')
+      .mockReturnValue(of(responseStatus));
 
     fixture.detectChanges();
   });
@@ -107,7 +106,7 @@ describe('VisitListComponent', () => {
   it('should call deleteVisit() method', () => {
     fixture.detectChanges();
     component.deleteVisit(component.visits[0]);
-    expect(spy.calls.any()).toBe(true, 'deleteVisit called');
+    expect(spy).toHaveBeenCalled();
   });
 
 });

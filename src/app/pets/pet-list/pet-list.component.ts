@@ -21,7 +21,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {PetService} from '../pet.service';
 import {Pet} from '../pet';
@@ -35,12 +35,15 @@ import { VisitListComponent } from '../../visits/visit-list/visit-list.component
     imports: [NgIf, VisitListComponent]
 })
 export class PetListComponent implements OnInit {
+  private router = inject(Router);
+  private petService = inject(PetService);
+
   errorMessage: string;
   @Input() pet: Pet;
   responseStatus: number;
   deleteSuccess = false;
 
-  constructor(private router: Router, private petService: PetService) {
+  constructor() {
     this.pet = {} as Pet;
   }
 

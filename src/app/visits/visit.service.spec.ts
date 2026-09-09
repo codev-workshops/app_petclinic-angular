@@ -22,7 +22,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { inject, TestBed, waitForAsync } from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 import {VisitService} from './visit.service';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -34,7 +34,7 @@ describe('VisitService', () => {
     });
   });
 
-  it('should ...', waitForAsync(inject([HttpTestingController], (visitService: VisitService, http: HttpClient) => {
+  it('should ...', inject([HttpTestingController], (visitService: VisitService, http: HttpClient) => {
     expect(visitService).toBeTruthy();
-  })));
+  }));
 });

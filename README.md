@@ -160,7 +160,7 @@ sudo systemctl restart httpd
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `ng test` to execute the unit tests via [Vitest](https://vitest.dev) (Angular `@angular/build:unit-test` builder; `npm run test-headless` for a single non-watch run).
 
 ## Running end-to-end tests
 

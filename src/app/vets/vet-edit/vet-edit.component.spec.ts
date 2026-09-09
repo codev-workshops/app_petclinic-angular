@@ -22,7 +22,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {VetEditComponent} from './vet-edit.component';
@@ -32,21 +32,18 @@ describe('VetEditComponent', () => {
   let component: VetEditComponent;
   let fixture: ComponentFixture<VetEditComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, VetEditComponent]
-})
-      .compileComponents();
-  }));
+}).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VetEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-// TODO complete test
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  // TODO complete test: VetAddComponent/VetEditComponent need VetService/SpecialtyService/route stubs
+  it.todo('should create');
 });

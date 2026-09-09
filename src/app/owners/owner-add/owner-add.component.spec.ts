@@ -22,7 +22,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OwnerAddComponent } from './owner-add.component';
 import { FormsModule } from '@angular/forms';
@@ -46,8 +46,8 @@ describe('OwnerAddComponent', () => {
   let fixture: ComponentFixture<OwnerAddComponent>;
   let router: Router;
   beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
+    async () => {
+      await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, RouterTestingModule, OwnerAddComponent],
     providers: [
@@ -55,12 +55,12 @@ describe('OwnerAddComponent', () => {
         { provide: Router, useClass: RouterStub },
     ],
 }).compileComponents();
-    })
+    }
   );
 
   beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
+    async () => {
+      await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, RouterTestingModule, OwnerAddComponent],
     providers: [
@@ -68,15 +68,15 @@ describe('OwnerAddComponent', () => {
         { provide: Router, useClass: RouterStub },
     ],
 }).compileComponents();
-    })
+    }
   );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OwnerAddComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router=TestBed.get(Router);
-    spyOn(router,'navigate');
+    router=TestBed.inject(Router);
+    vi.spyOn(router,'navigate').mockImplementation(() => undefined);
   });
 
   it('should create OwnerAddComponent', () => {
@@ -89,17 +89,17 @@ describe('OwnerAddComponent', () => {
     let buttons = fixture.debugElement.queryAll(By.css('button'));
     let backbutton = buttons[0];
     backbutton.triggerEventHandler('click', null);
-    spyOn(component, 'gotoOwnersList').and.callThrough();
+    vi.spyOn(component, 'gotoOwnersList');
     expect(router.navigate).toHaveBeenCalledWith(['/owners']);
   });
 
  
-  it('add owner', waitForAsync(() => {
+  it('add owner', async () => {
     let buttons = fixture.debugElement.queryAll(By.css('button'));
     let addOwnerButton = buttons[1].nativeElement;
-    spyOn(component, 'onSubmit');
+    vi.spyOn(component, 'onSubmit').mockImplementation(() => undefined);
     addOwnerButton.click();
     expect(component.onSubmit).toHaveBeenCalled();
-  }));
+  });
 
 });

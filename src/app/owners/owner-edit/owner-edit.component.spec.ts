@@ -25,7 +25,6 @@
 import {
   ComponentFixture,
   TestBed,
-  waitForAsync,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { OwnerEditComponent } from './owner-edit.component';
@@ -50,8 +49,8 @@ describe('OwnerEditComponent', () => {
   let fixture: ComponentFixture<OwnerEditComponent>;
   let router: Router;
   beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
+    async () => {
+      await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     // schemas: [ NO_ERRORS_SCHEMA ],
     imports: [FormsModule, RouterTestingModule.withRoutes([
@@ -63,15 +62,15 @@ describe('OwnerEditComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     ],
 }).compileComponents();
-    })
+    }
   );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(OwnerEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    router=TestBed.get(Router);
-    spyOn(router,'navigate');
+    router=TestBed.inject(Router);
+    vi.spyOn(router,'navigate').mockImplementation(() => undefined);
   });
 
   it('should create OwnerEditComponent', () => {
@@ -82,17 +81,17 @@ describe('OwnerEditComponent', () => {
     let buttons = fixture.debugElement.queryAll(By.css('button'));
     let backbutton = buttons[0];
     backbutton.triggerEventHandler('click', null);
-    spyOn(component, 'gotoOwnerDetail').and.callThrough();
+    vi.spyOn(component, 'gotoOwnerDetail');
     expect(router.navigate).toHaveBeenCalledWith(['/owners', 1]);
   });
 
  
-  it('update owner', waitForAsync(() => {
+  it('update owner', async () => {
     let buttons = fixture.debugElement.queryAll(By.css('button'));
     let updateOwnerButton = buttons[1].nativeElement;
-    spyOn(component, 'onSubmit');
+    vi.spyOn(component, 'onSubmit').mockImplementation(() => undefined);
     updateOwnerButton.click();
     expect(component.onSubmit).toHaveBeenCalled();
-  }));
+  });
 
 });
