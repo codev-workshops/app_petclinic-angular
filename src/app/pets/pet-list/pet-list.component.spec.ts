@@ -22,7 +22,8 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {MockInstance} from 'vitest';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { PetListComponent } from './pet-list.component';
@@ -33,7 +34,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActivatedRouteStub, RouterStub } from '../../testing/router-stubs';
 import { Pet } from '../pet';
 import { Observable, of } from 'rxjs';
-import Spy = jasmine.Spy;
 
 class PetServiceStub {
   deletePet(petId: string): Observable<number> {
@@ -46,11 +46,11 @@ describe('PetListComponent', () => {
   let fixture: ComponentFixture<PetListComponent>;
   let inputPet: Pet;
   let petService: PetService;
-  let spy: Spy;
+  let spy: MockInstance;
 
   beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
+    async () => {
+      await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, PetListComponent],
     providers: [
@@ -60,7 +60,7 @@ describe('PetListComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     ],
 }).compileComponents();
-    })
+    }
   );
 
   beforeEach(() => {
@@ -85,7 +85,7 @@ describe('PetListComponent', () => {
     };
     component.pet = inputPet;
     petService = fixture.debugElement.injector.get(PetService);
-    spy = spyOn(petService, 'deletePet').and.returnValue(of(1));
+    spy = vi.spyOn(petService, 'deletePet').mockReturnValue(of(1));
 
     fixture.detectChanges();
   });
@@ -97,6 +97,6 @@ describe('PetListComponent', () => {
   it('should call deletePet() method', () => {
     fixture.detectChanges();
     component.deletePet(component.pet);
-    expect(spy.calls.any()).toBe(true, 'deletePet called');
+    expect(spy).toHaveBeenCalled();
   });
 });

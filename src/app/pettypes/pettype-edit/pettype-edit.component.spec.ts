@@ -1,4 +1,5 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {MockInstance} from 'vitest';
 
 import {PettypeEditComponent} from './pettype-edit.component';
 import {PetTypeService} from '../pettype.service';
@@ -8,7 +9,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteStub, RouterStub} from '../../testing/router-stubs';
 import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
-import Spy = jasmine.Spy;
 
 class PetTypeServiceStub {
   getPetTypeById(typeId: string): Observable<PetType> {
@@ -21,11 +21,11 @@ describe('PettypeEditComponent', () => {
   let component: PettypeEditComponent;
   let fixture: ComponentFixture<PettypeEditComponent>;
   let pettypeService: PetTypeService;
-  let spy: Spy;
+  let spy: MockInstance;
   let testPettype: PetType;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, PettypeEditComponent],
     providers: [
@@ -33,9 +33,8 @@ describe('PettypeEditComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
     ]
-})
-      .compileComponents();
-  }));
+}).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PettypeEditComponent);
@@ -46,8 +45,8 @@ describe('PettypeEditComponent', () => {
     };
 
     pettypeService = fixture.debugElement.injector.get(PetTypeService);
-    spy = spyOn(pettypeService, 'getPetTypeById')
-      .and.returnValue(of(testPettype));
+    spy = vi.spyOn(pettypeService, 'getPetTypeById')
+      .mockReturnValue(of(testPettype));
 
     fixture.detectChanges();
   });

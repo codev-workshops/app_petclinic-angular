@@ -22,7 +22,8 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {MockInstance} from 'vitest';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 import {VisitEditComponent} from './visit-edit.component';
@@ -35,7 +36,6 @@ import {Observable, of} from 'rxjs';
 import {Pet} from '../../pets/pet';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import Spy = jasmine.Spy;
 import {OwnerService} from '../../owners/owner.service';
 import {PetService} from '../../pets/pet.service';
 
@@ -60,10 +60,10 @@ describe('VisitEditComponent', () => {
   let visitService: VisitService;
   let testVisit: Visit;
   let testPet: Pet;
-  let spy: Spy;
+  let spy: MockInstance;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, MatDatepickerModule, MatMomentDateModule, VisitEditComponent],
     providers: [
@@ -73,9 +73,8 @@ describe('VisitEditComponent', () => {
         { provide: Router, useClass: RouterStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
     ]
-})
-      .compileComponents();
-  }));
+}).compileComponents();
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VisitEditComponent);
@@ -105,8 +104,8 @@ describe('VisitEditComponent', () => {
     };
 
     visitService = fixture.debugElement.injector.get(VisitService);
-    spy = spyOn(visitService, 'getVisitById')
-      .and.returnValue(of(testVisit));
+    spy = vi.spyOn(visitService, 'getVisitById')
+      .mockReturnValue(of(testVisit));
 
     fixture.detectChanges();
   });

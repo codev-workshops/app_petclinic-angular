@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
-    "test-headless": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
+    "test-headless": "ng test --no-watch",
     "lint": "ng lint",
     "e2e": "playwright test"
   },
@@ -40,25 +40,20 @@
     "@angular-eslint/eslint-plugin-template": "^20.7.0",
     "@angular-eslint/schematics": "20.7.0",
     "@angular-eslint/template-parser": "^20.7.0",
+    "@angular/build": "^20.3.36",
     "@angular/cli": "20.3.36",
     "@angular/compiler-cli": "20.3.30",
     "@angular/language-service": "20.3.30",
     "@playwright/test": "^1.49.1",
-    "@types/jasmine": "~3.6.0",
     "@types/node": "^18.19.130",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "jasmine-core": "~3.6.0",
-    "karma": "~6.3.16",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-cli": "~1.0.1",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
-    "karma-jasmine": "~4.0.0",
-    "karma-jasmine-html-reporter": "^1.5.0",
+    "jsdom": "^26.1.0",
     "source-map-explorer": "^1.5.0",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "vitest": "^3.2.4"
   }
 }

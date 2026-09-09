@@ -25,6 +25,7 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 // Other imports
 import { TestBed } from '@angular/core/testing';
+import {Mock} from 'vitest';
 import { HttpClient, HttpErrorResponse, HttpResponse, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { HttpErrorHandler } from '../error.service';
@@ -38,7 +39,7 @@ describe('OwnerService', () => {
   let httpTestingController: HttpTestingController;
   let ownerService: OwnerService;
   let expectedOwners: Owner[];
-  let httpClientSpy: { get: jasmine.Spy };
+  let httpClientSpy: { get: Mock };
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [OwnerService, HttpErrorHandler, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
@@ -52,7 +53,7 @@ describe('OwnerService', () => {
     ] as Owner[];
     // Inject the http, test controller, and service-under-test
     // as they will be referenced by each test.
-    httpClientSpy = jasmine.createSpyObj('HttpClient', ['get']);
+    httpClientSpy = { get: vi.fn() };
     let httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject<HttpTestingController>(
       HttpTestingController as Type<HttpTestingController>
@@ -70,11 +71,8 @@ describe('OwnerService', () => {
       .getOwners()
       .subscribe({
         next: (owners) =>
-          expect(owners).toEqual(
-            expectedOwners,
-            'should return expected owners'
-          ),
-        error: fail
+          expect(owners).toEqual(expectedOwners),
+        error: (e: unknown) => expect.unreachable(String(e))
       });
 
     // OwnerService should have made one request to GET owners from expected URL
@@ -112,8 +110,8 @@ describe('OwnerService', () => {
     ownerService
       .addOwner(owner)
       .subscribe({
-        next: (data) => expect(data).toEqual(owner, 'should return new owner'),
-        error: fail
+        next: (data) => expect(data).toEqual(owner),
+        error: (e: unknown) => expect.unreachable(String(e))
       });
 
     const req = httpTestingController.expectOne(ownerService.entityUrl);
@@ -142,7 +140,7 @@ describe('OwnerService', () => {
 
     ownerService
       .updateOwner(owner.id.toString(), owner)
-      .subscribe({ next: (data) => expect(data).toEqual(owner, 'updated owner'), error: fail });
+      .subscribe({ next: (data) => expect(data).toEqual(owner), error: (e: unknown) => expect.unreachable(String(e)) });
 
     const req = httpTestingController.expectOne(ownerService.entityUrl + '/'+owner.id);
     expect(req.request.method).toEqual('PUT');
@@ -171,10 +169,10 @@ describe('OwnerService', () => {
       statusText: 'Not Found'
     });
 
-    httpClientSpy.get.and.returnValue(asyncError(errorResponse));
+    httpClientSpy.get.mockReturnValue(asyncError(errorResponse));
 
     ownerService.getOwnerById(1).subscribe((owners) => {
-      fail('Should have failed with 404 error'),
+      expect.unreachable('Should have failed with 404 error'),
       (error: HttpErrorResponse) => {
         expect(error.status).toEqual(404);
         expect(error.error).toContain('404 error');

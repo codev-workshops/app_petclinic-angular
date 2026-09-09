@@ -22,7 +22,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { ENGINE_METHOD_PKEY_ASN1_METHS } from 'constants';
@@ -49,8 +49,8 @@ describe('OwnerDetailComponent', () => {
   let el: HTMLElement;
   let router: Router;
   beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
+    async () => {
+      await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, RouterTestingModule, OwnerDetailComponent],
     providers: [
@@ -59,11 +59,11 @@ describe('OwnerDetailComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     ],
 }).compileComponents();
-    })
+    }
   );
   beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
+    async () => {
+      await TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     imports: [FormsModule, RouterTestingModule, OwnerDetailComponent],
     providers: [
@@ -72,7 +72,7 @@ describe('OwnerDetailComponent', () => {
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
     ],
 }).compileComponents();
-    })
+    }
   );
 
   const owner: Owner = {
@@ -96,36 +96,36 @@ describe('OwnerDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('find owner using ownerId', () => {
+  it('find owner using ownerId', async () => {
     fixture.detectChanges();
-    fixture.whenStable().then(() => {
+    await fixture.whenStable().then(() => {
       // wait for async getOwners
       fixture.detectChanges(); // update view with name
       de = fixture.debugElement.query(By.css('.ownerFullName'));
       el = de.nativeElement;
-      expect(el.innerText).toBe(
+      expect(el.textContent.trim()).toBe(
         owner.firstName.toString() + ' ' + owner.lastName.toString()
       );
     });
   });
 
   it('routing to owners page on click of editOwner,addPet,gotoOwnersList', () => {
-    spyOn(router, 'navigate');
+    vi.spyOn(router, 'navigate').mockImplementation(() => undefined);
     let buttons = fixture.debugElement.queryAll(By.css('button'));
 
     let ownersListButton = buttons[0].nativeElement;
     ownersListButton.click();
-    spyOn(component, 'gotoOwnersList').and.callThrough();
+    vi.spyOn(component, 'gotoOwnersList');
     expect(router.navigate).toHaveBeenCalledWith(['/owners']);
 
     let editOwnerButton = buttons[1].nativeElement;
     editOwnerButton.click();
-    spyOn(component, 'editOwner').and.callThrough();
+    vi.spyOn(component, 'editOwner');
     expect(router.navigate).toHaveBeenCalledWith(['/owners']);
 
     let addNewPetButton = buttons[2].nativeElement;
     addNewPetButton.click();
-    spyOn(component, 'addPet').and.callThrough();
+    vi.spyOn(component, 'addPet');
     expect(router.navigate).toHaveBeenCalledWith(['/owners']);
   });
 
