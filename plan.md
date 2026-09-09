@@ -27,7 +27,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 22 (
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | Done | 19.2.25 |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | #32 | Done | 20.3.30 |
-| 5 - Angular 21 | 21 | `feature/praveen-demo-migration-phase5-ng21` | #34 | In progress | 21.2.22 |
+| 5 - Angular 21 | 21 | `feature/praveen-demo-migration-phase5-ng21` | #34 | Done | 21.2.22 |
 | 6 - Angular 22 | 22 | `feature/praveen-demo-migration-phase6-ng22` | - | Not started | - |
 
 ## Phase checklist
@@ -124,9 +124,9 @@ Scope:
 DoD:
 - [x] All `@angular/*` packages on 21.x (core 21.2.22, material/cdk 21.2.14); unit tests pass on Vitest 4 (43 passed, 2 todo).
 - [x] build/test-headless/lint green locally.
-- [ ] Browser smoke test against local backend (results on the PR).
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] Browser smoke test against local backend (results on #34; runtime 21.2.22, all flows pass; the owners list showing empty-state text instead of an alert when the backend is down is pre-existing, `owner-edit` shows the alert).
+- [x] Devin review findings resolved (review on #34 reported no findings).
+- [x] PR ready for review against base; not merged.
 
 ### Phase 6 - Angular 22 (target: 22.x)
 
