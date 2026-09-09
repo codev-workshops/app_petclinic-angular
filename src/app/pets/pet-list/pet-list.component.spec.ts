@@ -28,6 +28,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { PetListComponent } from './pet-list.component';
 import { FormsModule } from '@angular/forms';
 import { PetService } from '../pet.service';
+import { VisitService } from '../../visits/visit.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivatedRouteStub, RouterStub } from '../../testing/router-stubs';
 import { Pet } from '../pet';
@@ -50,15 +51,15 @@ describe('PetListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [PetListComponent],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        imports: [FormsModule],
-        providers: [
-          { provide: PetService, useClass: PetServiceStub },
-          { provide: Router, useClass: RouterStub },
-          { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        ],
-      }).compileComponents();
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule, PetListComponent],
+    providers: [
+        { provide: PetService, useClass: PetServiceStub },
+        { provide: VisitService, useValue: {} },
+        { provide: Router, useClass: RouterStub },
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+    ],
+}).compileComponents();
     })
   );
 

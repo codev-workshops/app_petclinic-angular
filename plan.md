@@ -25,7 +25,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 | 0 - Pre-work | 16 (unchanged) | `feature/praveen-demo-migration-phase0-prework` | #28 | Done | 16.2.1 |
 | 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | #29 | Done | 17.3.12 |
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
-| 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | - | Not started | - |
+| 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | In progress | 19.2.25 |
 | 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | - | Not started | - |
 
 ## Phase checklist
@@ -52,7 +52,7 @@ Scope:
 - [x] Node 18.13+/20.9+ (VM runs Node 20), TypeScript 5.4.5, `zone.js` `~0.14.10`.
 - [x] `ng update @angular/core@17 @angular/cli@17 @angular-eslint/schematics@17`, then `ng update @angular/material@17` (cdk and material-moment-adapter in lockstep, 17.3.10).
 - [x] Replace `HttpClientModule` in `src/app/app.module.ts` with `provideHttpClient()`.
-- [ ] Optional (deferred): move `angular.json` from `@angular-devkit/build-angular:browser` to the esbuild `application` builder; verify jQuery/Tether/Bootstrap globals still inject.
+- [x] ~~Optional (deferred): move `angular.json` from `@angular-devkit/build-angular:browser` to the esbuild `application` builder.~~ Dropped: the app stays on the `browser` builder for the rest of the migration (decision taken at the start of Phase 3).
 
 DoD:
 - [x] All `@angular/*` packages on 17.x.
@@ -78,18 +78,18 @@ DoD:
 ### Phase 3 - Angular 19 (target: 19.x)
 
 Scope:
-- [ ] `ng update` to 19; TypeScript 5.5/5.6.
-- [ ] Run the standalone components migration schematic.
-- [ ] Convert all NgModules (`AppModule`, `OwnersModule`, `PetsModule`, `VisitsModule`, `PetTypesModule`, `VetsModule`, `SpecialtiesModule`, `PartsModule` and routing modules) to standalone.
-- [ ] Replace `bootstrapModule(AppModule)` in `src/main.ts` with `bootstrapApplication`.
-- [ ] Move module-level providers (e.g. `DateAdapter` / `MAT_DATE_FORMATS` in `src/app/pets/pets.module.ts`) into standalone config.
+- [x] `ng update @angular/core@19 @angular/cli@19 @angular-eslint/schematics@19`, then `ng update @angular/material@19` (19.2.x); the CLI moved TypeScript to 5.8.3 (within Angular 19's supported 5.5-5.8 range) and `zone.js` to `~0.15.1`.
+- [x] Run the standalone components migration schematic (`convert-to-standalone`, `prune-ng-modules`, `standalone-bootstrap`).
+- [x] Convert all NgModules to standalone: `AppModule`, `PartsModule`, `TestingModule` and all feature/routing modules deleted; each `*-routing.module.ts` became a `*.routes.ts` exporting a `Routes` array, composed in `src/app/app.routes.ts` (feature routes first, then `welcome`/`''`/`**`, preserving the previous module import order).
+- [x] Replace `bootstrapModule(AppModule)` in `src/main.ts` with `bootstrapApplication(AppComponent, appConfig)`.
+- [x] Move module-level providers (services, resolvers, `HttpErrorHandler`, `DateAdapter` / `MAT_DATE_FORMATS`) into `src/app/app.config.ts` (`provideRouter`, `provideHttpClient`, `provideAnimations`).
 
 DoD:
-- [ ] All `@angular/*` packages on 19.x; app standalone-bootstrapped.
-- [ ] build/test/lint green locally.
-- [ ] Browser smoke test against local backend.
-- [ ] Devin review findings resolved.
-- [ ] PR ready for review against base; not merged.
+- [x] All `@angular/*` packages on 19.x; app standalone-bootstrapped.
+- [x] build/test/lint green locally.
+- [x] Browser smoke test against local backend (results on #31).
+- [x] Devin review findings resolved (review on #31 reported no findings).
+- [x] PR ready for review against base; not merged.
 
 ### Phase 4 - Angular 20 (target: 20.x)
 
