@@ -20,15 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {RouterModule, Routes} from '@angular/router';
+import {Routes} from '@angular/router';
 import {PetListComponent} from './pet-list/pet-list.component';
-import {NgModule} from '@angular/core';
 import {VisitAddComponent} from '../visits/visit-add/visit-add.component';
 import {PetEditComponent} from './pet-edit/pet-edit.component';
 import {PetAddComponent} from './pet-add/pet-add.component';
 
 
-const petRoutes: Routes = [
+export const petRoutes: Routes = [
   {path: 'pets', component: PetListComponent},
   {path: 'pets/add', component: PetAddComponent},
   {
@@ -46,11 +45,3 @@ const petRoutes: Routes = [
   }
 
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(petRoutes)],
-  exports: [RouterModule]
-})
-
-export class PetsRoutingModule {
-}

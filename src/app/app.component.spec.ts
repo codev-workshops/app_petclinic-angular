@@ -26,16 +26,15 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import {AppComponent} from './app.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {provideRouter} from '@angular/router';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [FormsModule]
-    }).compileComponents();
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule, AppComponent],
+    providers: [provideRouter([])]
+}).compileComponents();
   }));
 
   it('should create the app', waitForAsync(() => {

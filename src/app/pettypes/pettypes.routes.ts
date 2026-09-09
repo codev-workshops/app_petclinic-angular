@@ -16,31 +16,18 @@
  *
  */
 
+
 /**
  * @author Vitaliy Fedoriv
  */
 
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {VisitListComponent} from './visit-list/visit-list.component';
-import {VisitEditComponent} from './visit-edit/visit-edit.component';
-import {VisitAddComponent} from './visit-add/visit-add.component';
+import {Routes} from '@angular/router';
+import {PettypeListComponent} from './pettype-list/pettype-list.component';
+import {PettypeAddComponent} from './pettype-add/pettype-add.component';
+import {PettypeEditComponent} from './pettype-edit/pettype-edit.component';
 
-const visitRoutes: Routes = [
-  {path: 'visits', component: VisitListComponent},
-  {path: 'visits/add', component: VisitAddComponent},
-  {path: 'visits/:id/edit', component: VisitEditComponent}
-
+export const pettypesRoutes: Routes = [
+  {path: 'pettypes', component: PettypeListComponent},
+  {path: 'pettypes/add', component: PettypeAddComponent},
+  {path: 'pettypes/:id/edit', component: PettypeEditComponent}
 ];
-
-
-@NgModule({
-  imports: [
-    RouterModule.forChild(visitRoutes)
-  ],
-  exports: [
-    RouterModule
-  ]
-})
-export class VisitsRoutingModule {
-}

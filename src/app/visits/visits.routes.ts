@@ -20,27 +20,14 @@
  * @author Vitaliy Fedoriv
  */
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
-import {WelcomeComponent} from './welcome/welcome.component';
+import {Routes} from '@angular/router';
+import {VisitListComponent} from './visit-list/visit-list.component';
+import {VisitEditComponent} from './visit-edit/visit-edit.component';
+import {VisitAddComponent} from './visit-add/visit-add.component';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
-  declarations: [
-    PageNotFoundComponent,
-    WelcomeComponent
-  ],
-  exports: [
-    PageNotFoundComponent,
-    WelcomeComponent
-  ]
+export const visitRoutes: Routes = [
+  {path: 'visits', component: VisitListComponent},
+  {path: 'visits/add', component: VisitAddComponent},
+  {path: 'visits/:id/edit', component: VisitEditComponent}
 
-})
-export class PartsModule {
-}
-
+];
