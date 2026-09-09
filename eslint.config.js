@@ -1,7 +1,5 @@
 const tseslint = require('typescript-eslint');
-const angular = require('@angular-eslint/eslint-plugin');
-const angularTemplate = require('@angular-eslint/eslint-plugin-template');
-const templateParser = require('@angular-eslint/template-parser');
+const angular = require('angular-eslint');
 
 module.exports = tseslint.config(
   {
@@ -10,19 +8,14 @@ module.exports = tseslint.config(
   {
     files: ['**/*.ts'],
     languageOptions: {
-      parser: tseslint.parser,
       parserOptions: {
         project: ['tsconfig.json'],
         tsconfigRootDir: __dirname,
       },
     },
-    plugins: {
-      '@angular-eslint': angular,
-      '@typescript-eslint': tseslint.plugin,
-    },
-    processor: angularTemplate.processors['extract-inline-html'],
+    extends: [...angular.configs.tsRecommended],
+    processor: angular.processInlineTemplates,
     rules: {
-      ...angular.configs.recommended.rules,
       '@angular-eslint/component-selector': [
         'error',
         {
@@ -47,18 +40,11 @@ module.exports = tseslint.config(
         },
       ],
       '@angular-eslint/no-empty-lifecycle-method': 'off',
+      '@angular-eslint/prefer-on-push-component-change-detection': 'off',
     },
   },
   {
     files: ['**/*.html'],
-    languageOptions: {
-      parser: templateParser,
-    },
-    plugins: {
-      '@angular-eslint/template': angularTemplate,
-    },
-    rules: {
-      ...angularTemplate.configs.recommended.rules,
-    },
+    extends: [...angular.configs.templateRecommended],
   },
 );
