@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Specialty} from '../specialty';
 import {SpecialtyService} from '../specialty.service';
 import {Router} from '@angular/router';
@@ -36,13 +36,16 @@ import { SpecialtyAddComponent } from '../specialty-add/specialty-add.component'
     imports: [NgFor, FormsModule, NgIf, SpecialtyAddComponent]
 })
 export class SpecialtyListComponent implements OnInit {
+  private specService = inject(SpecialtyService);
+  private router = inject(Router);
+
   specialties: Specialty[];
   errorMessage: string;
   responseStatus: number;
   isInsert = false;
   isSpecialitiesDataReceived: boolean = false;
 
-  constructor(private specService: SpecialtyService, private router: Router) {
+  constructor() {
     this.specialties = [];
   }
 

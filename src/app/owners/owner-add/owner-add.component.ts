@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {OwnerService} from '../owner.service';
 import {Owner} from '../owner';
 import {Router} from '@angular/router';
@@ -34,11 +34,14 @@ import { NgIf } from '@angular/common';
     imports: [FormsModule, NgIf]
 })
 export class OwnerAddComponent implements OnInit {
+  private ownerService = inject(OwnerService);
+  private router = inject(Router);
+
 
   owner: Owner;
   errorMessage: string;
 
-  constructor(private ownerService: OwnerService, private router: Router) {
+  constructor() {
     this.owner = {} as Owner;
   }
 

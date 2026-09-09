@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {OwnerService} from '../owner.service';
 import {Owner} from '../owner';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
@@ -35,15 +35,14 @@ import { NgIf, NgFor } from '@angular/common';
     imports: [FormsModule, NgIf, NgFor, RouterLinkActive, RouterLink]
 })
 export class OwnerListComponent implements OnInit {
+  private router = inject(Router);
+  private ownerService = inject(OwnerService);
+
   errorMessage: string;
   lastName: string;
   owners: Owner[];
   listOfOwnersWithLastName: Owner[];
   isOwnersDataReceived: boolean = false;
-
-  constructor(private router: Router, private ownerService: OwnerService) {
-
-  }
 
   ngOnInit() {
     this.ownerService.getOwners().pipe(

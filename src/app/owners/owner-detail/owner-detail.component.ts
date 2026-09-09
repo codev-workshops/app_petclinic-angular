@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {OwnerService} from '../owner.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Owner} from '../owner';
@@ -35,10 +35,14 @@ import { PetListComponent } from '../../pets/pet-list/pet-list.component';
     imports: [NgFor, PetListComponent]
 })
 export class OwnerDetailComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private ownerService = inject(OwnerService);
+
   errorMessage: string;
   owner: Owner;
 
-  constructor(private route: ActivatedRoute, private router: Router, private ownerService: OwnerService) {
+  constructor() {
     this.owner = {} as Owner;
   }
 

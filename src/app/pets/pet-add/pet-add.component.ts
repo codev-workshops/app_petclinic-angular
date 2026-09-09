@@ -21,7 +21,7 @@
  */
 
 
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {Pet} from '../pet';
 import {PetType} from '../../pettypes/pettype';
 import {Owner} from '../../owners/owner';
@@ -42,6 +42,12 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
     imports: [FormsModule, NgIf, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, NgFor, DatePipe]
 })
 export class PetAddComponent implements OnInit {
+  private ownerService = inject(OwnerService);
+  private petService = inject(PetService);
+  private petTypeService = inject(PetTypeService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   pet: Pet;
   @Input() currentType: PetType;
   currentOwner: Owner;
@@ -49,8 +55,7 @@ export class PetAddComponent implements OnInit {
   addedSuccess = false;
   errorMessage: string;
 
-  constructor(private ownerService: OwnerService, private petService: PetService,
-              private petTypeService: PetTypeService, private router: Router, private route: ActivatedRoute) {
+  constructor() {
     this.pet = {} as Pet;
     this.currentOwner = {} as Owner;
     this.currentType = {} as PetType;
