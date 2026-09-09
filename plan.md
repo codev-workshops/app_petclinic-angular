@@ -26,7 +26,7 @@ Phased upgrade of `spring-petclinic-angular` from Angular 16.2.1 to Angular 20.
 | 1 - Angular 17 | 17 | `feature/praveen-demo-migration-phase1-ng17` | #29 | Done | 17.3.12 |
 | 2 - Angular 18 | 18 | `feature/praveen-demo-migration-phase2-ng18` | #30 | Done | 18.2.14 |
 | 3 - Angular 19 | 19 | `feature/praveen-demo-migration-phase3-ng19` | #31 | Done | 19.2.25 |
-| 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | TBD | In progress | 20.3.30 |
+| 4 - Angular 20 | 20 | `feature/praveen-demo-migration-phase4-ng20` | #32 | In progress | 20.3.30 |
 
 ## Phase checklist
 
@@ -105,7 +105,7 @@ Scope:
 DoD:
 - [x] All `@angular/*` packages on 20.x; unit tests pass on the new runner (43 passed, 2 todo).
 - [x] build/lint green locally.
-- [ ] Browser smoke test against local backend.
+- [ ] Browser smoke test against local backend (results on #32).
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
 
