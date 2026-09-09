@@ -105,7 +105,7 @@ Scope:
 DoD:
 - [x] All `@angular/*` packages on 20.x; unit tests pass on the new runner (43 passed, 2 todo).
 - [x] build/lint green locally.
-- [ ] Browser smoke test against local backend (results on #32).
+- [x] Browser smoke test against local backend (results on #32).
 - [ ] Devin review findings resolved.
 - [ ] PR ready for review against base; not merged.
 
