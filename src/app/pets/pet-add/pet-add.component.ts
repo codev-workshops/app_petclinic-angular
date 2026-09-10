@@ -21,7 +21,7 @@
  */
 
 
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Pet} from '../pet';
 import {PetType} from '../../pettypes/pettype';
 import {Owner} from '../../owners/owner';
@@ -30,7 +30,7 @@ import {PetTypeService} from '../../pettypes/pettype.service';
 import {PetService} from '../pet.service';
 import {OwnerService} from '../../owners/owner.service';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
@@ -39,6 +39,7 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
     selector: 'app-pet-add',
     templateUrl: './pet-add.component.html',
     styleUrls: ['./pet-add.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, DatePipe]
 })
 export class PetAddComponent implements OnInit {

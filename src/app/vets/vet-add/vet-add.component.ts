@@ -20,9 +20,9 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Specialty} from '../../specialties/specialty';
-import {SpecialtyService} from 'app/specialties/specialty.service';
+import {SpecialtyService} from '../../specialties/specialty.service';
 import {Vet} from '../vet';
 import {Router} from '@angular/router';
 import {VetService} from '../vet.service';
@@ -33,6 +33,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-vet-add',
     templateUrl: './vet-add.component.html',
     styleUrls: ['./vet-add.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule]
 })
 export class VetAddComponent implements OnInit {

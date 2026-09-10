@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {Specialty} from '../specialty';
 import {SpecialtyService} from '../specialty.service';
 import {Router} from '@angular/router';
@@ -33,6 +33,7 @@ import { SpecialtyAddComponent } from '../specialty-add/specialty-add.component'
     selector: 'app-specialty-list',
     templateUrl: './specialty-list.component.html',
     styleUrls: ['./specialty-list.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, SpecialtyAddComponent]
 })
 export class SpecialtyListComponent implements OnInit {

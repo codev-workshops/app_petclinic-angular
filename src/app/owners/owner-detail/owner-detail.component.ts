@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import {OwnerService} from '../owner.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Owner} from '../owner';
@@ -32,6 +32,7 @@ import { PetListComponent } from '../../pets/pet-list/pet-list.component';
     selector: 'app-owner-detail',
     templateUrl: './owner-detail.component.html',
     styleUrls: ['./owner-detail.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [PetListComponent]
 })
 export class OwnerDetailComponent implements OnInit {

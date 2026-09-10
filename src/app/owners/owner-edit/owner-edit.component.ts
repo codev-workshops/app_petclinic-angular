@@ -20,7 +20,7 @@
  * @author Vitaliy Fedoriv
  */
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OwnerService } from '../owner.service';
 import { Owner } from '../owner';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -31,6 +31,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-owner-edit',
     templateUrl: './owner-edit.component.html',
     styleUrls: ['./owner-edit.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule]
 })
 export class OwnerEditComponent implements OnInit {
