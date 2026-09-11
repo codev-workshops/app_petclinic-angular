@@ -46,8 +46,9 @@ describe('VetAddComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-// TODO complete test
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
+
+  // TODO complete test
+  xit('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
