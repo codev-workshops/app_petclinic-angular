@@ -20,19 +20,25 @@
  * @author Vitaliy Fedoriv
  */
 
-import {Component, OnInit} from '@angular/core';
-import {Vet} from '../vet';
-import {VetService} from '../vet.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {SpecialtyService} from '../../specialties/specialty.service';
-import {Specialty} from '../../specialties/specialty';
-import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Vet } from '../vet';
+import { VetService } from '../vet.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SpecialtyService } from '../../specialties/specialty.service';
+import { Specialty } from '../../specialties/specialty';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-vet-edit',
   templateUrl: './vet-edit.component.html',
   styleUrls: ['./vet-edit.component.css'],
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class VetEditComponent implements OnInit {
   vetEditForm: FormGroup;
@@ -44,23 +50,34 @@ export class VetEditComponent implements OnInit {
   specList: Specialty[];
   errorMessage: string;
 
-  constructor(private formBuilder: FormBuilder, private specialtyService: SpecialtyService,
-              private vetService: VetService, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private specialtyService: SpecialtyService,
+    private vetService: VetService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
     this.vet = {} as Vet;
     this.specList = [] as Specialty[];
     this.buildForm();
   }
 
   buildForm() {
-this.idCtrl = new FormControl(null);
-    this.firstNameCtrl = new FormControl('', [Validators.required, Validators.minLength(2)]);
-    this.lastNameCtrl = new FormControl('', [Validators.required, Validators.minLength(2)]);
+    this.idCtrl = new FormControl(null);
+    this.firstNameCtrl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]);
+    this.lastNameCtrl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]);
     this.specialtiesCtrl = new FormControl(null);
     this.vetEditForm = this.formBuilder.group({
       id: this.idCtrl,
       firstName: this.firstNameCtrl,
       lastName: this.lastNameCtrl,
-      specialties: this.specialtiesCtrl
+      specialties: this.specialtiesCtrl,
     });
   }
 
@@ -85,16 +102,15 @@ this.idCtrl = new FormControl(null);
 
   onSubmit(vet: Vet) {
     this.vetService.updateVet(vet.id.toString(), vet).subscribe(
-      res => {
+      (res) => {
         console.log('update success');
         this.gotoVetList();
       },
-      error => this.errorMessage = error as any);
-
+      (error) => (this.errorMessage = error as any),
+    );
   }
 
   gotoVetList() {
     this.router.navigate(['/vets']);
   }
-
 }
