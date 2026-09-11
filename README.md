@@ -15,7 +15,7 @@ Warning: **client only**.
 
 ## Installation
 
-1. Update angular-cli to latest version (8.0.3 current)
+1. Install Node.js 22 (required by Angular 22), then update angular-cli to latest version
 as described on [angular-cli github readme.md](https://github.com/angular/angular-cli#updating-angular-cli)
 
 ````
@@ -29,12 +29,10 @@ git clone https://github.com/spring-petclinic/spring-petclinic-angular.git
 ````
 Install local project package
 ````
-npm install --save-dev @angular/cli@latest
-if npm version > 5.0 delete package-lock.json file  ( bug in npm 5.0 - this file prevent correct packages install)
 npm install
 ````
 
-Now project use Angular CLI v.8.0.3 and Angular v.8.0.1
+Now project use Angular CLI v.22 and Angular v.22
 You can see current dependencies in [package.json](package.json) file.
 
 ## Development server
@@ -161,11 +159,6 @@ sudo systemctl restart httpd
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
 
 ## Further help
 
